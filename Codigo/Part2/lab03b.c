@@ -39,7 +39,7 @@
  *  Return value:
  *    Pointer to the first node of the linked list.
  */
-LinkedList * readEntryFile2LinkedList(FILE * fp)
+LinkedList * readEntryFile2LinkedList(FILE * fp, int (* getAttribute)(Entry *))
 {
   int id;
   int age;
@@ -59,7 +59,7 @@ LinkedList * readEntryFile2LinkedList(FILE * fp)
     entry = newEntry(id, age, height, weight);
 
     /* Store entry in the linked list                             */
-    lp = insertUnsortedLinkedList(lp,(Item) entry);
+    lp = insertSortedLinkedList(lp,(Item) entry, less(Item, Item, getAttribute(Entry *)), getAttribute(Entry *));
   }
 
   return lp;
@@ -124,6 +124,8 @@ void freeEntryItem(Item item)
  * Function:
  *   main
  */
+
+
 int main(int argc, char *argv[])
 {
   FILE * fp;
@@ -132,6 +134,9 @@ int main(int argc, char *argv[])
   char extOut[] = ".sort";
   char * fileNameIn;
   char * fileNameOut;
+
+  int attribute = 1;
+  int ascending = 1;
 
 
   /* Check number of arguments                                    */
@@ -152,9 +157,22 @@ int main(int argc, char *argv[])
     exit(2);
   }
 
+  if(argc >= 4) {
+    if(strcasecmp(argv[3], "-d")
+      ascending = 0;
+  }
 
   /* Read input file and construct linked list with entries       */
-  lp = readEntryFile2LinkedList(fp);
+  if(argc >= 3) {
+      if(strcasecmp(argv[2],"-id") == 1)
+        lp = readEntryFile2LinkedList(fp, getIdEntry);
+      else if(strcasecmp(argv[2],"-age") == 1)
+        lp = readEntryFile2LinkedList(fp, getAgeEntry);
+      else if(strcasecmp(argv[2],"-height") == 1)
+        lp = readEntryFile2LinkedList(fp, getHeightEntry);
+      else if(strcasecmp(argv[2],"-weight") == 1)
+        lp = readEntryFile2LinkedList(fp, getWeightEntry);
+  }
 
 
   /* Close input file                                             */

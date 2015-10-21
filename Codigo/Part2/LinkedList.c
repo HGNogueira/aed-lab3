@@ -28,6 +28,7 @@
 
 /* Include Header File with Data Type and Function Prototypes     */
 #include"LinkedList.h"
+#include"Entry.h"
 
 
 
@@ -248,17 +249,54 @@ LinkedList * insertUnsortedLinkedList(LinkedList * next, Item this)
  *  Return value:
  *    Returns the pointer to the first node of the sorted linked list.
  */
-LinkedList * insertSortedLinkedList(LinkedList * first, 
-                           Item item, 
-                           int (* comparisonItemFnt)
-                           (Item item1, Item item2)
-                           int * err)
-{
+LinkedList * insertSortedLinkedList(LinkedList * first, Item item, int (* comparisonItemFnt) (Item item1, Item item2, int (* getAttribute)(Entry * entry1)), int (* getAttribute)(Entry * entry1), int * err)
+{ 
+  LinkedList *aux;
+  LinkedList *node;
 
+  if(item == NULL) {
+    fprintf(stderr, "Can't Insert NULL Item\n");
+    *err = 1;
+    return first;
+  }
+ 
+  node = (LinkedList*) malloc(sizeof(LinkedList));
+  if(node == NULL) {
+      *err = 2;
+      fprintf(stderr, "Memory Allocation error\n");
+      return first;
+  }
+  
+  node->this = (Item) malloc(sizeof(Item));
+  if(node == NULL) {
+      *err = 2;
+      fprintf(stderr, "Memory Allocation error\n");
+      return first;
+  }
+  node->this = item;
 
+  if(comparisonItemFnt(item, first, getAttribute(Entry*), getAttribute(Entry*)) == 1){
+      node->next = first;
+      return node;
+  }
 
+  for(aux = first; aux->next != NULL; aux = aux->next) {
+      if(comparisonItemFnt(item, aux->next, getAttribute(Entry*), getAttribute(Entry*)) == 1) {
+          node->next = aux->next;
+          aux->next = node;
+          return first;
+      }
+  }
+    
+  node->next = aux->next;
+  aux->next = node;
 
-
-  return NULL;
+  return first;
 }
 
+int less(Item iEntry1, Item iEntry2, int (* getAttribute)(Entry *)) {
+    Entry *entry1 = (Entry *) iEntry1;
+    Entry *entry2 = (Entry *) iEntry2;
+
+    return getAttribute(entry1) < getAttribute(entry2) ? 1 : 0;
+}

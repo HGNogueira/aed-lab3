@@ -52,6 +52,10 @@
 /* Include Header File for the definition of the Item type        */
 #include "defs.h"
 
+#ifndef EntryHeader
+#include "Entry.h"
+#endif
+
 
 
 /*
@@ -205,13 +209,9 @@ LinkedList * insertUnsortedLinkedList(LinkedList * next, Item this);
  *  Return value:
  *    Returns the pointer to the first node of the sorted linked list.
  */
-LinkedList * insertSortedLinkedList(LinkedList * first, 
-                           Item item, 
-                           int (* comparisonItemFnt)
-                           (Item item1, Item item2)
-                           int * err);
+LinkedList * insertSortedLinkedList(LinkedList * first, Item item, int (* comparisonItemFnt) (Item item1, Item item2, int (* getAttribute)(Entry *entry1)), int (* getAttribute)(Entry *entry1), int * err);
 
-
+int less(Item iEntry1, Item iEntry2, int (* getAttribute)(Entry *));
 
 /* End of: Protect multiple inclusions                              */
 #endif
