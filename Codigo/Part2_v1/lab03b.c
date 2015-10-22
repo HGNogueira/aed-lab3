@@ -96,6 +96,17 @@ void writeEntryFile(LinkedList * lp, FILE *fp)
   }
 }
 
+void writeReverseEntryFile(LinkedList * lp, FILE *fp)
+{
+    if(getNextNodeLinkedList(lp) == NULL) {
+      printEntry((Entry *) getItemLinkedList(lp), fp);
+      return;
+    }
+    writeReverseEntryFile(getNextNodeLinkedList(lp), fp);
+    printEntry((Entry *) getItemLinkedList(lp), fp);
+    return;
+}
+
 
 
 /*
@@ -216,7 +227,10 @@ int main(int argc, char *argv[])
 
 
   /* Write entries to output file                                 */
-  writeEntryFile(lp, fp);
+  if(asc == 1)
+    writeEntryFile(lp, fp);
+  else
+    writeReverseEntryFile(lp, fp);
 
 
   /* Free space allocated to fileNameOut                          */
