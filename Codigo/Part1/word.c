@@ -338,7 +338,7 @@ void sort(Item a[], int l, int r, int (*less) (Item, Item, int*), int *n_ops)
     while (j > l && less(v, a[j - 1], n_ops)) {
       a[j] = a[j - 1];
       j--;
-      *n_ops += 2; /* not account for less function */
+      *n_ops += 3; /* not account for less function */
     }
     a[j] = v;
     *n_ops += 5;
@@ -394,7 +394,7 @@ int strlenLess(Item iPal1, Item iPal2, int* n_ops) {
     t_palavra *pal2 = (t_palavra *) iPal2;
 
 
-    *n_ops += 3;
+    *n_ops += 1;
     len1 = strlen( pal1->nome);
     len2 = strlen( pal2->nome);    
     *n_ops += len1 + len2; /* strlen is O(strlen) complexity */
@@ -409,7 +409,7 @@ int strlenMore(Item iPal1, Item iPal2, int* n_ops) {
     t_palavra *pal1 = (t_palavra *) iPal1;
     t_palavra *pal2 = (t_palavra *) iPal2;
 
-    *n_ops += 3;
+    *n_ops += 1;
     len1 = strlen( pal1->nome);
     len2 = strlen( pal2->nome);    
     *n_ops += len1 + len2; /* strlen is O(strlen) complexity */
