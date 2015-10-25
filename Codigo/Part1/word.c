@@ -271,10 +271,15 @@ void EscreveFicheiro(t_tabela * t, char *ficheiro, int n_palavras)
  *
  *****************************************************************************/
 
-void LibertaTabelaPalavras(t_tabela * t, int nt_palavras)
+void LibertaTabelaPalavras(t_tabela * t, int n_palavras)
 {
+  int i = 0;
 
-  /** -- free all memory allocated for table of words -- */
+  for(i = 0; i < n_palavras; i++) {
+    free( (*t)[i]->nome );
+    free( (*t)[i]);
+  }
+  free(*t);
 
   return;
 }

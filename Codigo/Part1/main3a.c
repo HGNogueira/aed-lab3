@@ -91,6 +91,7 @@ int main(int argc, char **argv)
   printf("Number of total program operations: %d\n", n_ops);
 
   /* -- Insert code to call functions to free allocated memory -- */
+  LibertaTabelaPalavras( &tabela, n_palavras );
 
 
   /* ------------------------------------------------------------ */
